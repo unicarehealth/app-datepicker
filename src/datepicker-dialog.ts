@@ -227,7 +227,7 @@ export class DatepickerDialog extends LitElement {
     });
   }
 
-  public async close(): Promise<void> {
+  public async close(supplyValueWithEvent : boolean = true): Promise<void> {
     await this.updateComplete;
 
     if (!this._opened) return;
@@ -254,7 +254,7 @@ export class DatepickerDialog extends LitElement {
     if (!this.noFocusTrap) this._focusTrap!.disconnect();
 
     dispatchCustomEvent<DatepickerDialogClosed>(
-      this, 'datepicker-dialog-closed', { opened: false, value: this.value });
+      this, 'datepicker-dialog-closed', { opened: false, value: supplyValueWithEvent ? this.value : '' });
   }
 
   protected shouldUpdate() {
@@ -267,7 +267,7 @@ export class DatepickerDialog extends LitElement {
     this.setAttribute('aria-modal', 'true');
     this.setAttribute('aria-hidden', 'true');
     this.addEventListener('keyup', (ev: KeyboardEvent) => {
-      if (ev.keyCode === KEY_CODES_MAP.ESCAPE) this.close();
+      if (ev.keyCode === KEY_CODES_MAP.ESCAPE) this._dismiss();
     });
 
     dispatchCustomEvent<DatepickerFirstUpdated>(this, 'datepicker-dialog-first-updated', {
@@ -287,7 +287,7 @@ export class DatepickerDialog extends LitElement {
 
   protected render() {
     return html`
-    <div class="scrim" part="scrim" @click="${this.close}"></div>
+    <div class="scrim" part="scrim" @click="${this._dismiss}"></div>
 
     ${this._opened ? html`<div class="content-container" part="dialog-content">
     <app-datepicker class="datepicker"
@@ -310,7 +310,7 @@ export class DatepickerDialog extends LitElement {
       <div class="actions-container" part="actions">
         <mwc-button class="clear" part="clear" @click="${this._setToday}">${this.clearLabel}</mwc-button>
 
-        <mwc-button part="dismiss" dialog-dismiss @click="${this.close}">${this.dismissLabel}</mwc-button>
+        <mwc-button part="dismiss" dialog-dismiss @click="${this._dismiss}">${this.dismissLabel}</mwc-button>
         <mwc-button part="confirm" dialog-confirm @click="${this._update}">${this.confirmLabel}</mwc-button>
       </div>
     </div>` : null}
@@ -337,7 +337,11 @@ export class DatepickerDialog extends LitElement {
   private _update() {
     this._updateValue();
 
-    return this.close();
+    return this.close(true);
+  }
+
+  private _dismiss() {
+    return this.close(false);
   }
 
   private _updateWithKey(ev: CustomEvent<DatepickerValueUpdated>) {
