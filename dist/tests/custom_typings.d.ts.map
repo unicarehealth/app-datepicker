@@ -1,0 +1,1 @@
+{"version":3,"file":"custom_typings.d.ts","sourceRoot":"","sources":["../../src/tests/custom_typings.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,aAAa,CAAC;AAE9C,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,kBAAkB,CAAC;AAEnD,oBAAY,cAAc,GAAG,OAAO,CAClC,MAAM,CAAC,OAAO,GAAG,OAAO,EAAE,OAAO,CAAC,IAAI,CAAC,UAAU,EAAE,MAAM,UAAU,CAAC,CAAC,CAAC,CAAC,CAAC"}
